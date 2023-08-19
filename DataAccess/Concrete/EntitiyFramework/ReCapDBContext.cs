@@ -1,0 +1,21 @@
+﻿using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccess.Concrete.EntitiyFramework
+{
+    public class ReCapDBContext : DbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=ReCapDBv2;Trusted_Connection=true;TrustServerCertificate=True");
+        }
+        public DbSet<Car> Car { get; set; }
+        public DbSet<Brand> Brand { get; set; }
+        public DbSet<Color> Color { get; set; }
+    }
+}
