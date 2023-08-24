@@ -1,14 +1,14 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntitiyFramework;
 
-CarTest();
+//CarTest();
 
-//BrandTest();
+BrandTest();
 
 static void CarTest()
 {
     CarManager carManager = new CarManager(new EfCarDal());
-    foreach (var car in carManager.GetCarDetail())
+    foreach (var car in carManager.GetCarDetail().Data)
     {
         Console.WriteLine("{0} marka {1} model araç ({2} renk) ", car.BrandName, car.Description,car.ColorName);
     }
@@ -17,8 +17,16 @@ static void CarTest()
 static void BrandTest()
 {
     BrandManager brandManager = new BrandManager(new EfBrandDal());
-    foreach (var brand in brandManager.GetAll())
+    var result = brandManager.GetAll();
+    if (result.Success == true)
     {
-        Console.WriteLine(brand.BrandName);
+        foreach(var brand in result.Data)
+        {
+            Console.WriteLine(brand.BrandName);
+        }
+    }
+    else 
+    {         
+        Console.WriteLine(result.Message);
     }
 }

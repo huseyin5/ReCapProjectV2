@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -12,21 +14,31 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        private ICarDal _iCarDal;
+        private ICarDal _carDal;
 
-        public CarManager(ICarDal iCarDal)
+        public CarManager(ICarDal carDal)
         {
-            _iCarDal = iCarDal;
+            _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IResult Add(Car car)
         {
-            return _iCarDal.GetAll();
+            if(car.Description.Length < 2)
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public List<CarDetailDto> GetCarDetail()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _iCarDal.GetCarDetails();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetail()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
     }
 }
