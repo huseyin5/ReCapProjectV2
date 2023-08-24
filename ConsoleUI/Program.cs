@@ -1,9 +1,17 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete.EntitiyFramework;
+using DataAccess.Concrete.EntityFramework;
 
-CarTest();
+//CarTest();
 
 //BrandTest();
+
+//UserTest();
+
+//CustomerTest();
+
+RentalTest();
+
 
 static void CarTest()
 {
@@ -35,6 +43,57 @@ static void BrandTest()
     }
     else 
     {         
+        Console.WriteLine(result.Message);
+    }
+}
+
+static void CustomerTest()
+{
+    CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+    var result = customerManager.GetAll();
+    if (result.Success == true)
+    {
+        foreach (var customer in result.Data)
+        {
+            Console.WriteLine(customer.CompanyName);
+        }
+    }
+    else
+    {
+        Console.WriteLine(result.Message);
+    }
+}
+
+static void RentalTest()
+{
+    RentalManager rentalManager = new RentalManager(new EfRentalDal());
+    var result = rentalManager.GetRentalDetails();
+    if (result.Success == true)
+    {
+        foreach (var rental in result.Data)
+        {
+            Console.WriteLine("{0} araç {1} şirketin tarafından {2} tarihinde kiralanmıştır. Teslim tarihi: {3}",rental.CarDescription,rental.CompanyName,rental.RantDate,rental.ReturnDate);
+        }
+    }
+    else
+    {
+        Console.WriteLine(result.Message);
+    }
+}
+
+static void UserTest()
+{
+    UserManager userManager = new UserManager(new EfUserDal());
+    var result = userManager.GetAll();
+    if (result.Success == true)
+    {
+        foreach (var user in result.Data)
+        {
+            Console.WriteLine(user.FirstName);
+        }
+    }
+    else
+    {
         Console.WriteLine(result.Message);
     }
 }
